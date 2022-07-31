@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <div class="underlined-title"> -->
+            <div>
+                <h1>Ansible Builder</h1>
+                <hr>
+            </div>
+            <div class="services-wrapper">
+                <div class="col-md-4">
+                    <a href="plugin_builder">
+                        <div class="icon bg-sunflower">
+                            <span class="fa fa-cogs"></span>
+                        </div>
+                        <h4>Ansible Plugin</h4>
+                        <p>Generate Ansible Plugin Boilerplate Code</p>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="rmb">
+                        <div class="icon bg-deepocean">
+                            <span class="fa fa-edit"></span>
+                        </div>
+                        <h4>Resource Module</h4>
+                        <p>Generate Resource Module Boilerplate Code</p>
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+                    <a href="rmb">
+                        <div class="icon bg-orange">
+                            <span class="fa fa-lock"></span>
+                        </div>
+                        <h4>Security Module</h4>
+                        <p>Generate Security Module Boilerplate Code </p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+
+{% endblock content %}

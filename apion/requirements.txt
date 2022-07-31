@@ -1,0 +1,12 @@
+Flask>=0.10.1
+Jinja2>=2.8
+MarkupSafe>=0.23
+ncclient>=0.5.3
+pyang>=1.7.1
+shelljob>=0.6.3
+flask-wtf>=1.0.1
+email_validator>=1.2.1
+flask-sqlalchemy-2.5.1
+flask-bcrypt>=1.0.1
+flask-login>=0.6.2
+
