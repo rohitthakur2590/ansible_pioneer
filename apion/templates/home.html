@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <div class="underlined-title"> -->
+            <div>
+                <h1>Ansible Pioneer</h1>
+                <hr>
+            </div>
+            <div class="services-wrapper">
+                <div class="col-md-4">
+                    <a href="netconf">
+                        <div class="icon bg-deepocean">
+                            <span class="fa fa-book"></span>
+                        </div>
+                        <h4>Netconf</h4>
+                        <p>Manage, manipulate and monitor the network devices with NETCONF protocol</p>
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+
+                    <a href="inventory">
+                        <div class="icon bg-sunflower">
+                            <span class="fa fa-archive"></span>
+                        </div>
+                        <h4>Network Lab</h4>
+                        <p>Build local network topology</p>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="ansible_builder">
+                        <div class="icon bg-turquoise">
+                            <span class="fa fa-edit"></span>
+                        </div>
+                        <h4>Ansible Builder</h4>
+                        <p>Generate boilerplate code for plugins or modules</p>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="rmb">
+                        <div class="icon bg-orange">
+                            <span class="fa fa-tasks"></span>
+                        </div>
+                        <h4>Testing</h4>
+                        <p>Run tests on Developed Module</p>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="rmb">
+                        <div class="icon bg-river">
+                            <span class="fa fa-thumbs-o-up"></span>
+                        </div>
+                        <h4>Validator</h4>
+                        <p>Validate the provided tasks for the network appliance</p>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="rmb">
+                        <div class="icon bg-deco">
+                            <span class="fa fa-asterisk"></span>
+                        </div>
+                        <h4>Resource Manager</h4>
+                        <p>Platform agnostic role to manage all the supported network appliances</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+
+{% endblock content %}
