@@ -13,6 +13,7 @@ from flask_login import login_user, current_user, logout_user
 def index():
     return render_template('index.html')
 
+
 @app.route('/home')
 def home():
     return render_template('home.html')
@@ -53,9 +54,8 @@ def rmb():
 
                 # import time
                 # # time.sleep(2.4)
-
             g = proc.Group()
-            p = g.run(['ansible-playbook', '../../../ansible_network/sample.yaml'])
+            p = g.run(['ansible-playbook', '../../ansible_network/sample.yaml'])
 
             def read_process():
                 while g.is_pending():
@@ -153,7 +153,7 @@ def smb():
                 time.sleep(2.4)
 
             g = proc.Group()
-            p = g.run(['ansible-playbook', '../../../ansible_network/sample.yaml'])
+            p = g.run(['ansible-playbook', '../../ansible_network/sample.yaml'])
 
             def read_process():
                 while g.is_pending():
