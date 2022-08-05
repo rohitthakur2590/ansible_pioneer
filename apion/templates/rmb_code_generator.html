@@ -89,9 +89,15 @@
           <pre>
                 <code class="language-{{language}}">
                  <script>
+
+
                     var source = new EventSource("/rmb");
                     source.onmessage = function(event) {
-                        document.getElementById("output").innerHTML += event.data + "<br/>"
+                        document.getElementById("res").innerHTML += event.data + "<br/>"
+                    }
+                                      var source = new EventSource("/rmb");
+                    source.onmessage = function(event) {
+                        document.getElementById("res").innerHTML += event.data + "<br/>"
                     }
                   </script>
                 </code>
@@ -134,6 +140,15 @@
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="static/assets/js/ie10-viewport-bug-workaround.js"></script>
 <script>
+       (function() {
+   var button=document.getElementById("add-user");
+   button.addEventListener('click', function(event) {
+      event.preventDefault();
+      var cln = document.getElementsByClassName("user")[0].cloneNode(true);
+      document.getElementById("users").insertBefore(cln,this);
+      return false;
+   });
+})();
       $(document).ready(function(){
       $("#example").click(function(){
       $("#exampleModal").modal("toggle");

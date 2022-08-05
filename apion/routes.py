@@ -1,12 +1,23 @@
 from flask import Markup, render_template, redirect, url_for, request, Response, escape, flash
 from apion import app, db, bcrypt
 from apion import snippets
-from apion.utils.utils import write_to_yamlfile, write_generate_playbook, default_yml, op
+from apion.utils.utils import write_to_yamlfile, write_generate_playbook, default_yml, op, write_manifest_file
 from shelljob import proc
-from apion.forms import RegistrationForm, LoginForm
+from apion.forms import RegistrationForm, LoginForm, PluginBuilderForm
 from apion.models import User
 from flask_login import login_user, current_user, logout_user
+from apion.plugins.playbook_builder import PlaybookBuilder
+from apion.plugins.inventory_builder import InventoryBuilder
+from apion.plugins.playbook_runner import PlaybookRunner
+from apion.plugins.event_filter import EventFilter
+import queue
+import asyncio
+import jinja2
+import yaml
+from jinja2 import Environment
+from jinja2.loaders import FileSystemLoader
 
+from collections import OrderedDict
 
 @app.route("/")
 @app.route("/index")
@@ -25,7 +36,8 @@ def ansible_builder():
 
 
 @app.route('/rmb', methods=['GET', 'POST'])
-def rmb():
+async def rmb():
+    eventq = queue.Queue()
     kw = {
         "snippets": snippets.snippets,
     }
@@ -43,27 +55,20 @@ def rmb():
             return render_template('rmb_code_generator.html', **kw)
 
         elif kw['submit'] == 'generate':
+            print(kw['docstring'])
+            apb = PlaybookBuilder(content=kw)
+            playbook = apb.rmbp()
 
-            if 'junos' in kw['collection_org']:
-                yaml_playbook = str(kw['xml'])
-                print(yaml_playbook)
-                write_to_yamlfile(yaml_playbook)
-            else:
+            aib = InventoryBuilder('localhost', 'rothakur', 'redcosmos', 'local')
+            inventory = aib.generate()
 
-                write_generate_playbook(**kw)
+            pbr = PlaybookRunner(inventory=inventory, playbook=playbook)
+            events = await pbr.run(eventq)
+            print(events)
+            res = EventFilter(events=events, playbook_name="rmbp").filter()
+            # return render_template('rmb_code_generator.html', res=res, **kw)
+            return Response(res, mimetype='text/event-stream')
 
-                # import time
-                # # time.sleep(2.4)
-            g = proc.Group()
-            p = g.run(['ansible-playbook', '../../ansible_network/sample.yaml'])
-
-            def read_process():
-                while g.is_pending():
-                    lines = g.readlines()
-                    for proc, line in lines:
-                        yield line
-
-            return Response(read_process(), mimetype='text/plain')
     else:
         kw['xml'] = default_yml
         kw[op['get']] = 'checked'
@@ -71,16 +76,17 @@ def rmb():
     return render_template('rmb_code_generator.html', **kw)
 
 
+
 @app.route('/plugin_builder', methods=['GET', 'POST'])
-def plugin_builder():
+async def plugin_builder():
+    import q
+    eventq = queue.Queue()
     kw = {
         "snippets": snippets.snippets,
     }
-
     if request.method == 'POST':
 
         for k, v in request.form.items():
-            print(k, v)
             kw[k] = v
 
         if kw['submit'] == 'reset':
@@ -90,29 +96,34 @@ def plugin_builder():
             return render_template('plugin_generator.html', **kw)
 
         elif kw['submit'] == 'generate':
+            eventq = queue.Queue()
 
-            if 'vyos' in kw['collection_org']:
-                write_generate_playbook(**kw)
 
-            else:
+            if True:
+                q("Content", kw)
+                write_manifest_file(kw)
 
-                yaml_playbook = str(kw['xml'])
-                print(yaml_playbook)
-                write_to_yamlfile(yaml_playbook)
+                apb = PlaybookBuilder(content=kw)
 
-                import time
-                time.sleep(2.4)
+                playbook = apb.pbp()
 
-            g = proc.Group()
-            p = g.run(['ansible-playbook', '../../../ansible_network/sample.yaml'])
+                aib = InventoryBuilder('localhost', 'rothakur', 'redcosmos', 'local')
 
-            def read_process():
-                while g.is_pending():
-                    lines = g.readlines()
-                    for proc, line in lines:
-                        yield line
+                inventory = aib.generate()
 
-            return Response(read_process(), mimetype='text/plain')
+                pbr = PlaybookRunner(inventory=inventory, playbook=playbook)
+
+                events = await pbr.run(eventq)
+
+                print(events)
+
+                res = EventFilter(events=events, playbook_name="rmbp").filter()
+                return Response(res, mimetype='text/event-stream')
+
+
+
+            # return render_template('rmb_code_generator.html', res=res, **kw)
+
     else:
         kw['xml'] = default_yml
         kw[op['get']] = 'checked'

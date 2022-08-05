@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, FieldList, FormField, TextAreaField, BooleanField, FileField, Form
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from apion.models import User
+from wtforms.widgets import TextArea
 
 
 class RegistrationForm(FlaskForm):
@@ -37,3 +38,28 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
 
     submit = SubmitField('Login')
+
+
+class PluginDetailForm(Form):
+    type = StringField('Plugin Type', validators=[DataRequired()])
+    name = StringField('Plugin Name', validators=[DataRequired()])
+    docstring = FileField('Docstring', validators=[DataRequired()])
+
+
+class PluginBuilderForm(FlaskForm):
+    dest_path = StringField('Destination Path')
+    namespace = StringField('Namespace')
+    coll_name = StringField('Collection Name')
+    plugin_type = StringField('Plugin Type')
+    plugin_name = StringField('Plugin Name')
+    docstring = FileField('Docstring')
+    content = TextAreaField('Content', widget=TextArea())
+    first_name = TextAreaField('First Name', widget=TextArea())
+    submit = SubmitField('Generate')
+    reset = SubmitField('Reset')
+    # pugin_type = FieldList(FormField(PluginDetailForm), min_entries=1)
+    #plugins = FieldList(FormField(PluginDetailForm))
+
+
+
+

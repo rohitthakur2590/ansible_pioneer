@@ -33,6 +33,22 @@ def write_to_yamlfile(playbook):
     text_file = open("/home/rothakur/ansible-collections/collections/ansible_collections/ansible_network/sample.yaml", "w")
     n = text_file.write(playbook)
 
+
+def write_manifest_file(kw):
+    playbook = '''---
+    collection:
+      path: ''' + kw['dest_path'] + '''
+      namespace: ''' + kw['namespace'] + '''
+      name: ''' + kw['collection_name'] + '''
+    plugins:
+      - type: ''' + kw['plugin_type'] + '''
+        name: ''' + kw['plugin_name'] + '''
+        docstring: ''' + kw['docstring']
+
+    text_file = open("/home/rothakur/.ansible/collections/ansible_collections/ansible/plugin_builder/MANIFEST.yaml", "w")
+    n = text_file.write(playbook)
+
+
 def write_generate_playbook(**kw):
     """
 
