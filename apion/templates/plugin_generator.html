@@ -1,141 +1,147 @@
 {% extends "layout.html" %}
 {% block content %}
-    <br>
-    <br>
+<br>
+<br>
+<div class="container">
+    <h1 style="text-align:center">Ansible Plugin Builder</h1>
+    <p class="lead">This GUI uses Collection <a href="https://github.com/ansible-community/ansible.plugin_builder">ansible.plugin_builder</a> that helps developers scaffold and maintain Ansible Plugins.</p>
+</div>
+<div class="container">
+  <form role="form" action="{{uri}}" name="inputs" method="post" class="">
     <div class="container">
-      <h1 style="text-align:center">Ansible Plugin Builder</h1>
-      <p class="lead">This GUI uses Collection <a href="https://github.com/ansible-community/ansible.plugin_builder">ansible.plugin_builder</a> that helps developers scaffold and maintain Ansible Plugins.</p>
-    </div>
-    <div class="container">
-      <form role="form" action="{{uri}}" name="inputs" method="post" class="">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="control-label">Collection Path</label>
-                <input type="text" class="form-control" id="rmDest" placeholder="~/ansible-collections/collections/ansible_collections/" name="rm_dest" value="{{rm_dest}}">
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="control-label">Namespace</label>
-
-                <input type="text" class="form-control" id="collectionOrg" placeholder="" name="collection_org" value="{{collection_org}}">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="control-label">Name</label>
-                <input type="text" class="form-control" id="collectionName" placeholder="" name="collection_name" value="{{collection_name}}">
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="control-label">Plugin Type</label>
-                <input type="text" class="form-control" id="resource" placeholder="Type of plugin" name="resource" value="{{resource}}">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="control-label">Plugin Name</label>
-                <input type="text" class="form-control" id="docstring" placeholder="Plugin Name" name="docstring" value="{{docstring}}">
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="control-label">Docstring</label>
-                <input type="text" class="form-control" id="networkOS" placeholder="Path to Docstring" name="network_os" value="{{network_os}}">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="panel">
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label class="control-label">Sample Playbook
-                  <span class="glyphicon glyphicon-question-sign" id="example"></span>
-                </label>
-                <textarea class="form-control" rows="10" id="xmlInput" name="xml" style="font-family:monospace;">{{xml}}</textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="container">
+      <div class="row">
+        <div class="col-md-6">
           <div class="form-group">
-	  </div>
-          <div class="row">
-            <div class="col-md-12">
-              <button type="submit" name="submit" value="generate" class="btn btn-primary">Generate</button>
-              <button type="submit" name="submit" value="reset" class="btn">Reset</button>
-            </div>
+            <label class="control-label">Destination Path</label>
+            <input type="text" class="form-control" id="dest_path" placeholder="~/ansible-collections/collections/ansible_collections/" name="dest_path" value="{{dest_path}}">
           </div>
         </div>
-        <div class="container">
-          <br />
-          <div class="row">
-            <div class="col-md-12">
-              <label class="control-label crsa-selected">Output</label>
-              <pre>
-                <code class="language-{{language}}">
-                 <script>
-                    var source = new EventSource("/rmb");
-                    source.onmessage = function(event) {
-                        document.getElementById("output").innerHTML += event.data + "<br/>"
-                    }
-                  </script>
-                </code>
-              </pre>
-            </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">Name Space</label>
+            <input type="text" class="form-control" id="namespace" placeholder="Collection namespace" name="namespace" value="{{namespace}}">
           </div>
         </div>
-      </form>
-
-      <!-- Modal -->
-    </div>
-    <div class="modal fade" id="exampleModal" role="dialog">
-      <div class="modal-dialog modal-lg">
-        <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">NETCONF {{operation}} Snippets</h4>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">Collection Name</label>
+            <input type="text" class="form-control" id="collectionName" placeholder="Name of the collection" name="collection_name" value="{{collection_name}}">
           </div>
-          <div class="modal-body">
-
-	  {% for example in snippets[ 'rmb' ] %}
-
-            <pre onclick="inject_snippet(this)" data-dismiss="modal"><code>{{example}}</code></pre>
-	  {% endfor %}
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">Plugin Type</label>
+            <input type="text" class="form-control" id="plugin_type" placeholder="Type of the plugin" name="plugin_type" value="{{plugin_type}}">
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">Plugin Name</label>
+            <input type="text" class="form-control" id="plugin_name" placeholder="Name of the plugin" name="plugin_name" value="{{plugin_name}}">
+          </div>
+        </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">Docstring</label>
+            <input type="text" class="form-control" id="docstring" placeholder="Path to the file that contains docstring" name="docstring" value="{{docstring}}">
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel">
           </div>
         </div>
       </div>
     </div>
-    <!-- /.container -->
-    <!-- Bootstrap core JavaScript
-	 ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="static/js/prism.js"></script>
-    <script src="static/assets/js/jquery.min.js"></script>
-    <script src="static/bootstrap/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="static/assets/js/ie10-viewport-bug-workaround.js"></script>
-    <script>
-    (function() {
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="control-label">Sample Playbook
+              <span class="glyphicon glyphicon-question-sign" id="example"></span>
+            </label>
+            <textarea class="form-control" rows="10" id="xmlInput" name="xml" style="font-family:monospace;">{{xml}}</textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="form-group">
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <button type="submit" name="submit" value="generate" class="btn btn-primary">Generate</button>
+          <button type="submit" name="submit" value="reset" class="btn">Reset</button>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <br />
+      <div class="row">
+        <div class="col-md-12">
+          <label class="control-label crsa-selected">Output</label>
+          <pre>
+                <code class="language-{{language}}">
+                 <script>
+
+
+                    var source = new EventSource("/plugin_builder");
+                    source.onmessage = function(event) {
+                        document.getElementById("res").innerHTML += event.data + "<br/>"
+                    }
+                                      var source = new EventSource("/rmb");
+                    source.onmessage = function(event) {
+                        document.getElementById("res").innerHTML += event.data + "<br/>"
+                    }
+                  </script>
+                </code>
+              </pre>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- Modal -->
+</div>
+<div class="modal fade" id="exampleModal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">NETCONF {{operation}} Snippets</h4>
+      </div>
+      <div class="modal-body">
+
+        {% for example in snippets[ 'rmb' ] %}
+
+        <pre onclick="inject_snippet(this)" data-dismiss="modal"><code>{{example}}</code></pre>
+        {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.container -->
+<!-- Bootstrap core JavaScript
+ ================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="static/js/prism.js"></script>
+<script src="static/assets/js/jquery.min.js"></script>
+<script src="static/bootstrap/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="static/assets/js/ie10-viewport-bug-workaround.js"></script>
+<script>
+       (function() {
    var button=document.getElementById("add-user");
    button.addEventListener('click', function(event) {
       event.preventDefault();
