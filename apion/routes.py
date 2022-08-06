@@ -1,7 +1,8 @@
 from flask import Markup, render_template, redirect, url_for, request, Response, escape, flash
 from apion import app, db, bcrypt
 from apion import snippets
-from apion.utils.utils import write_to_yamlfile, write_generate_playbook, default_yml, op, write_manifest_file
+from apion.utils.utils import write_to_yamlfile, write_generate_playbook, default_yml, format_network_triage,\
+    op, write_manifest_file, get_shell_script_output_using_communicate
 from shelljob import proc
 from apion.forms import RegistrationForm, LoginForm, PluginBuilderForm
 from apion.models import User
@@ -11,13 +12,8 @@ from apion.plugins.inventory_builder import InventoryBuilder
 from apion.plugins.playbook_runner import PlaybookRunner
 from apion.plugins.event_filter import EventFilter
 import queue
-import asyncio
-import jinja2
-import yaml
-from jinja2 import Environment
-from jinja2.loaders import FileSystemLoader
+from datetime import date
 
-from collections import OrderedDict
 
 @app.route("/")
 @app.route("/index")
@@ -89,6 +85,8 @@ async def plugin_builder():
         for k, v in request.form.items():
             kw[k] = v
 
+        q(kw)
+
         if kw['submit'] == 'reset':
             kw = {
                 "snippets": snippets.snippets,
@@ -117,12 +115,9 @@ async def plugin_builder():
 
                 print(events)
 
-                res = EventFilter(events=events, playbook_name="rmbp").filter()
-                return Response(res, mimetype='text/event-stream')
+                kw['res'] = EventFilter(events=events, playbook_name="rmbp").filter()
 
-
-
-            # return render_template('rmb_code_generator.html', res=res, **kw)
+                return render_template('plugin_generator.html', **kw)
 
     else:
         kw['xml'] = default_yml
@@ -208,10 +203,18 @@ def login():
             return redirect(url_for('home'))
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
-
     return render_template('login.html', title='Login', form=form)
+
 
 @app.route("/logout", methods=['GET', 'POST'])
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+@app.route("/triager", methods=['GET', 'POST'])
+def triager():
+    output = get_shell_script_output_using_communicate()
+    today = date.today()
+    data = format_network_triage(output)
+    return render_template('triager.html', data=data, date=today)

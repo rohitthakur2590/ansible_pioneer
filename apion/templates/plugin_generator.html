@@ -19,7 +19,7 @@
         <div class="col-md-6">
           <div class="form-group">
             <label class="control-label">Name Space</label>
-            <input type="text" class="form-control" id="namespace" placeholder="Collection namespace" name="namespace" value="{{namespace}}">
+            <input type="text" class="form-control" id="name_space" placeholder="Collection namespace" name="name_space" value="{{name_space}}">
           </div>
         </div>
       </div>
@@ -28,12 +28,20 @@
           <div class="form-group">
             <label class="control-label">Collection Name</label>
             <input type="text" class="form-control" id="collectionName" placeholder="Name of the collection" name="collection_name" value="{{collection_name}}">
+            <ul id="listing"></ul>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
             <label class="control-label">Plugin Type</label>
-            <input type="text" class="form-control" id="plugin_type" placeholder="Type of the plugin" name="plugin_type" value="{{plugin_type}}">
+            <input type="text"  class="form-control" list="plugin_type" placeholder="Type of the plugin" name="plugin_type" value="{{plugin_type}}">
+              <datalist id="plugin_type">
+                  <option>action</option>
+                  <option>cache</option>
+                  <option>filter</option>
+                  <option>test</option>
+                  <option>lookup</option>
+              </datalist>
           </div>
         </div>
       </div>
@@ -44,11 +52,11 @@
             <input type="text" class="form-control" id="plugin_name" placeholder="Name of the plugin" name="plugin_name" value="{{plugin_name}}">
           </div>
         </div>
-      <div class="row">
         <div class="col-md-6">
           <div class="form-group">
             <label class="control-label">Docstring</label>
             <input type="text" class="form-control" id="docstring" placeholder="Path to the file that contains docstring" name="docstring" value="{{docstring}}">
+
           </div>
         </div>
       </div>
@@ -90,7 +98,6 @@
           <pre>
                 <code class="language-{{language}}">
                  <script>
-
 
                     var source = new EventSource("/plugin_builder");
                     source.onmessage = function(event) {
@@ -141,8 +148,13 @@
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="static/assets/js/ie10-viewport-bug-workaround.js"></script>
 <script>
+   function showFileName() {
+   var fil = document.getElementById("myFile");
+   alert(fil.value);
+}
        (function() {
    var button=document.getElementById("add-user");
+
    button.addEventListener('click', function(event) {
       event.preventDefault();
       var cln = document.getElementsByClassName("user")[0].cloneNode(true);

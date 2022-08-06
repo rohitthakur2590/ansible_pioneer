@@ -10,24 +10,24 @@ class EventFilter(object):
 
         if self._playbook_name in ["rmbp"]:
             res = []
-            # res.append(self._events)
-            for event in self._events:
-                res.append(event)
-                # if event["event"] == "runner_on_ok":
-                #     nevent = {event["event_data"]["task_action"]: {
-                #         "before": event['event_data']['res']['before'],
-                #         "after": event['event_data']['res'].get('after', None),
-                #         "commands": event['event_data']['res']['commands'],
-                #         "changed": event['event_data']['res']['changed'],
-                #         "status": "ok"
-                #     }}
-                #     res.append(nevent)
+            res.append(self._events)
+            # for event in self._events:
+            #     res.append(event)
+            #     if event["event"] == "runner_on_ok":
+            #         # nevent = {event["event_data"]["task_action"]: {
+            #         #     "before": event['event_data']['res']['before'],
+            #         #     "after": event['event_data']['res'].get('after', None),
+            #         #     "commands": event['event_data']['res']['commands'],
+            #         #     "changed": event['event_data']['res']['changed'],
+            #         #     "status": "ok"
+            #         # }}
+            #         res.append(event)
 
-                #if event['event'] == "runner_on_failed":
-                    # nevent = {event["event_data"]["task_action"]: {
-                    #     "msg": event['event_data']['res']['msg'],
-                    #     "status": "failed"
-                    # }}
+                # if event['event'] == "runner_on_failed":
+                #     # nevent = {event["event_data"]["task_action"]: {
+                #     #     "msg": event['event_data']['res']['msg'],
+                #     #     "status": "failed"
+                #     # }}
                 #    res.append(event)
             print("RESULT ------------", res)
             return {"results": res}

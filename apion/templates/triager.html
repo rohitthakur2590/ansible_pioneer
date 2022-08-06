@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block content %}
+<br>
+<br>
+<br>
+<div class="container">
+  <h1 style="text-align:center">Ansible Network Weekly Triage</h1>
+  <p class="lead"><h5> Date: {{ date }}</h5></p>
+
+</div>
+<style>
+#customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  border:2px
+  margin-left:auto;
+  margin-right:auto
+  width: 200%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+</style>
+<div class="container">
+  <div class="row">
+    <table id="customers">
+      <tr>
+
+        <td><h5>Repo</h5></td>
+        <td><h5>Title</h5></td>
+        <td><h5>Url</h5></td>
+        <td><h5>Type</h5></td>
+      </tr>
+      {% for item in data  %}
+      <tr>
+        <td>{{ item.col1 }}</td>
+        <td>{{ item.col2 }}</td>
+        <td><a href="{{ item.col3 }}" target="_blank">{{ item.col3 }}</a></td>
+        <td>{{ item.col4 }}</td>
+      </tr>
+      {% endfor %}
+
+    </table>
+  </div>
+</div>
+
+{% endblock content %}

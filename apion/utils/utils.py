@@ -1,3 +1,5 @@
+from subprocess import Popen, PIPE
+from subprocess import check_output
 
 default_xml = '''<netconf-state xmlns="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">
   <schemas/>
@@ -20,7 +22,6 @@ op = {'get' : 'OPER_GET',
       'get_config' : 'OPER_GETCONFIG',
       'edit_config' : 'OPER_EDITCONFIG'}
 
-
 def validate_form():
     pass
 
@@ -38,7 +39,7 @@ def write_manifest_file(kw):
     playbook = '''---
     collection:
       path: ''' + kw['dest_path'] + '''
-      namespace: ''' + kw['namespace'] + '''
+      namespace: ''' + kw['name_space'] + '''
       name: ''' + kw['collection_name'] + '''
     plugins:
       - type: ''' + kw['plugin_type'] + '''
@@ -84,3 +85,36 @@ def write_generate_playbook(**kw):
 
     text_file = open("/home/rothakur/ansible-collections/collections/ansible_collections/ansible_network/sample.yaml", "w")
     n = text_file.write(playbook)
+
+def format_network_triage(data):
+    """
+
+    :param data:
+    :return:
+    """
+    data = data.splitlines()
+    triag_facts = []
+    for line in data:
+        temp = line.split(' |')
+        dict1 = {}
+        if len(temp) >= 3:
+            temp[0] = temp[0].replace('| ', '  ')
+            dict1["col1"] = temp[0]
+            dict1["col2"] = temp[1]
+            dict1["col3"] = temp[2]
+            dict1["col4"] = temp[3]
+
+            triag_facts.append(dict1)
+    triag_facts.remove(triag_facts[0])
+    return triag_facts
+
+def get_shell_script_output_using_communicate():
+    session = Popen(['/home/rothakur/triager.sh'], stdout=PIPE, stderr=PIPE)
+    stdout, stderr = session.communicate()
+    if stderr:
+        raise Exception("Error "+str(stderr))
+    return stdout.decode('utf-8')
+
+def get_shell_script_output_using_check_output():
+    stdout = check_output(['/home/rothakur/triager.sh']).decode('utf-8')
+    return stdout
