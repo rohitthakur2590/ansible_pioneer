@@ -175,6 +175,56 @@ def smb():
     return render_template('smb_generator.html', **kw)
 
 
+@app.route('/validated_content')
+def validated_content():
+    return render_template('validated_content.html')
+
+
+@app.route('/network_bgp', methods=['GET', 'POST'])
+async def network_bgp():
+    eventq = queue.Queue()
+    kw = {
+        "snippets": snippets.snippets,
+    }
+
+    if request.method == 'POST':
+
+        for k, v in request.form.items():
+            print(k, v)
+            kw[k] = v
+
+        if kw['submit'] == 'reset':
+            kw = {
+                "snippets": snippets.snippets,
+            }
+            return render_template('network_bgp.html', **kw)
+
+        elif kw['submit'] == 'generate':
+            print(kw['docstring'])
+            apb = PlaybookBuilder(content=kw)
+            playbook = apb.rmbp()
+
+            aib = InventoryBuilder('localhost', 'rothakur', 'redcosmos', 'local')
+            inventory = aib.generate()
+
+            pbr = PlaybookRunner(inventory=inventory, playbook=playbook)
+            events = await pbr.run(eventq)
+            print(events)
+            res = EventFilter(events=events, playbook_name="rmbp").filter()
+            # return render_template('rmb_code_generator.html', res=res, **kw)
+            return Response(res, mimetype='text/event-stream')
+
+    else:
+        kw['xml'] = default_yml
+        kw[op['get']] = 'checked'
+
+    return render_template('network_bgp.html', **kw)
+
+
+@app.route('/testing')
+def testing():
+    return render_template('testing.html')
+
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
