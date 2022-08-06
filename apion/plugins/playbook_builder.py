@@ -48,7 +48,7 @@ class PlaybookBuilder(object):
         collection_vars =OrderedDict(
             {
                     "path": self.content['dest_path'],
-                    "namespace": self.content['namespace'],
+                    "namespace": self.content['name_space'],
                     "name": self.content['collection_name'],
             }
         )

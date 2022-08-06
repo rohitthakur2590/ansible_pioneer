@@ -2,9 +2,11 @@
 {% block content %}
 <br>
 <br>
+
+
 <div class="container">
-    <h1 style="text-align:center">Ansible Plugin Builder</h1>
-    <p class="lead">This GUI uses Collection <a href="https://github.com/ansible-community/ansible.plugin_builder">ansible.plugin_builder</a> that helps developers scaffold and maintain Ansible Plugins.</p>
+  <h1 style="text-align:center">Network BGP Application</h1>
+  <p class="lead">This GUI uses Ansible Collection <a href="https://github.com/ansible-network/network.bgp"> network.bgp</a> that provides a single platform-agnostics entry point to manage all the BGP network resources </p>
 </div>
 <div class="container">
   <form role="form" action="{{uri}}" name="inputs" method="post" class="">
@@ -12,14 +14,15 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label class="control-label">Destination Path</label>
-            <input type="text" class="form-control" id="dest_path" placeholder="~/ansible-collections/collections/ansible_collections/" name="dest_path" value="{{dest_path}}">
+            <label class="control-label">Destination</label>
+            <input type="text" class="form-control" id="rmDest" placeholder="~/ansible-collections/collections/ansible_collections/" name="rm_dest" value="{{rm_dest}}">
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label class="control-label">Name Space</label>
-            <input type="text" class="form-control" id="name_space" placeholder="Collection namespace" name="name_space" value="{{name_space}}">
+            <label class="control-label">Collection Organization</label>
+
+            <input type="text" class="form-control" id="collectionOrg" placeholder="The organization of the collection" name="collection_org" value="{{collection_org}}">
           </div>
         </div>
       </div>
@@ -27,39 +30,29 @@
         <div class="col-md-6">
           <div class="form-group">
             <label class="control-label">Collection Name</label>
-            <input type="text" class="form-control" id="collectionName" placeholder="Name of the collection" name="collection_name" value="{{collection_name}}">
-            <ul id="listing"></ul>
+            <input type="text" class="form-control" id="collectionName" placeholder="The name of the collection" name="collection_name" value="{{collection_name}}">
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label class="control-label">Plugin Type</label>
-            <input type="text"  class="form-control" list="plugin_type" placeholder="Type of the plugin" name="plugin_type" value="{{plugin_type}}">
-              <datalist id="plugin_type">
-                  <option>action</option>
-                  <option>cache</option>
-                  <option>filter</option>
-                  <option>test</option>
-                  <option>lookup</option>
-              </datalist>
+            <label class="control-label">Resource</label>
+            <input type="text" class="form-control" id="resource" placeholder="The network resource targeted by the module" name="resource" value="{{resource}}">
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label class="control-label">Plugin Name</label>
-            <input type="text" class="form-control" id="plugin_name" placeholder="Name of the plugin" name="plugin_name" value="{{plugin_name}}">
+            <label class="control-label">Docstring</label>
+            <input type="text" class="form-control" id="docstring" placeholder="The path to the file that contains docstring" name="docstring" value="{{docstring}}">
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label class="control-label">Docstring</label>
-            <input type="text" class="form-control" id="docstring" placeholder="Path to the file that contains docstring" name="docstring" value="{{docstring}}">
-
+            <label class="control-label">Network OS</label>
+            <input type="text" class="form-control" id="networkOS" placeholder="The value of network_os" name="network_os" value="{{network_os}}">
           </div>
         </div>
-      </div>
       </div>
       <div class="row">
         <div class="col-md-12">
@@ -99,7 +92,8 @@
                 <code class="language-{{language}}">
                  <script>
 
-                    var source = new EventSource("/plugin_builder");
+
+                    var source = new EventSource("/rmb");
                     source.onmessage = function(event) {
                         document.getElementById("res").innerHTML += event.data + "<br/>"
                     }
@@ -148,13 +142,8 @@
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="static/assets/js/ie10-viewport-bug-workaround.js"></script>
 <script>
-   function showFileName() {
-   var fil = document.getElementById("myFile");
-   alert(fil.value);
-}
        (function() {
    var button=document.getElementById("add-user");
-
    button.addEventListener('click', function(event) {
       event.preventDefault();
       var cln = document.getElementsByClassName("user")[0].cloneNode(true);
