@@ -6,24 +6,26 @@ default_xml = '''<netconf-state xmlns="urn:ietf:params:xml:ns:yang:ietf-netconf-
 </netconf-state>'''
 
 default_yml = '''---
-- hosts: localhost
+- hosts: <hosts>
   gather_facts: yes
   roles:
     - ansible_network.cli_rm_builder.run
 
   vars:
-    resource: firewall_zones
-    rm_dest: ~/ansible-collections/collections/ansible_collections/vyos/vyos
-    docstring: ~/ansible_playbooks/collections/network/vyos/vyos/firewall_zones/docstring.yaml
-    collection_org: vyos
-    collection_name: vyos
+    resource: <resource>
+    rm_dest: <destination path>
+    docstring: <docstring>
+    collection_org: <collection org>
+    collection_name: <collection name>
 '''
 op = {'get' : 'OPER_GET',
       'get_config' : 'OPER_GETCONFIG',
       'edit_config' : 'OPER_EDITCONFIG'}
 
+
 def validate_form():
     pass
+
 
 def write_to_yamlfile(playbook):
     """
@@ -86,6 +88,7 @@ def write_generate_playbook(**kw):
     text_file = open("/home/rothakur/ansible-collections/collections/ansible_collections/ansible_network/sample.yaml", "w")
     n = text_file.write(playbook)
 
+
 def format_network_triage(data):
     """
 
@@ -108,12 +111,14 @@ def format_network_triage(data):
     triag_facts.remove(triag_facts[0])
     return triag_facts
 
+
 def get_shell_script_output_using_communicate():
     session = Popen(['/home/rothakur/triager.sh'], stdout=PIPE, stderr=PIPE)
     stdout, stderr = session.communicate()
     if stderr:
         raise Exception("Error "+str(stderr))
     return stdout.decode('utf-8')
+
 
 def get_shell_script_output_using_check_output():
     stdout = check_output(['/home/rothakur/triager.sh']).decode('utf-8')

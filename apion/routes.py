@@ -37,7 +37,8 @@ async def rmb():
     kw = {
         "snippets": snippets.snippets,
     }
-
+    import q
+    q(kw["snippets"])
     if request.method == 'POST':
 
         for k, v in request.form.items():

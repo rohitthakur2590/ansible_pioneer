@@ -3,90 +3,122 @@
 <br>
 <br>
 
+<style>
+body {font-family: Arial;}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  /* background-color: #f1f1f1; */
+  background-color: #04A977;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+</style>
+
+
+
 
 <div class="container">
   <h1 style="text-align:center">Network BGP Application</h1>
   <p class="lead">This GUI uses Ansible Collection <a href="https://github.com/ansible-network/network.bgp"> network.bgp</a> that provides a single platform-agnostics entry point to manage all the BGP network resources </p>
 </div>
+
 <div class="container">
+<div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'London')">Health Check</button>
+  <button class="tablinks" onclick="openCity(event, 'Paris')">Gather</button>
+  <button class="tablinks" onclick="openCity(event, 'Tokyo')">Persist</button>
+  <button class="tablinks" onclick="openCity(event, 'Tokyo')">Troubleshoot</button>
+</div>
+<div id="London" class="tabcontent">
+  <h4>BGP Health Check </h4>
   <form role="form" action="{{uri}}" name="inputs" method="post" class="">
     <div class="container">
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label class="control-label">Destination</label>
-            <input type="text" class="form-control" id="rmDest" placeholder="~/ansible-collections/collections/ansible_collections/" name="rm_dest" value="{{rm_dest}}">
+            <label class="control-label">All Neighbors Up</label>
+            <input type="checkbox"  id="all_up" name="all_up" value="all_neighbors_up">
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label class="control-label">Collection Organization</label>
-
-            <input type="text" class="form-control" id="collectionOrg" placeholder="The organization of the collection" name="collection_org" value="{{collection_org}}">
+            <label class="control-label">All Neighbors Down</label>
+            <input type="checkbox"  id="all_down" name="all_down" value="all_neighbors_down">
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label class="control-label">Collection Name</label>
-            <input type="text" class="form-control" id="collectionName" placeholder="The name of the collection" name="collection_name" value="{{collection_name}}">
+            <label class="control-label">Minimum Neighbors Up</label>
+            <input type="checkbox"  id="min_up" name="min_up" value="min_neighbors_up">
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label class="control-label">Resource</label>
-            <input type="text" class="form-control" id="resource" placeholder="The network resource targeted by the module" name="resource" value="{{resource}}">
+            <label class="control-label">Detailed Output</label>
+            <input type="checkbox"  id="detail" name="detail" value="detailed">
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label class="control-label">Docstring</label>
-            <input type="text" class="form-control" id="docstring" placeholder="The path to the file that contains docstring" name="docstring" value="{{docstring}}">
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label class="control-label">Network OS</label>
-            <input type="text" class="form-control" id="networkOS" placeholder="The value of network_os" name="network_os" value="{{network_os}}">
-          </div>
+        <div class="form-group">
+          <label class="control-label">Minimum Neighbors Count</label>
+          <input type="number" id="quantity" name="quantity" min="1" max="500">
         </div>
       </div>
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-11">
           <div class="panel">
           </div>
         </div>
       </div>
     </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="form-group">
-            <label class="control-label">Sample Playbook
-              <span class="glyphicon glyphicon-question-sign" id="example"></span>
-            </label>
-            <textarea class="form-control" rows="10" id="xmlInput" name="xml" style="font-family:monospace;">{{xml}}</textarea>
-          </div>
-        </div>
-      </div>
-    </div>
+
     <div class="container">
       <div class="form-group">
       </div>
       <div class="row">
         <div class="col-md-12">
-          <button type="submit" name="submit" value="generate" class="btn btn-primary">Generate</button>
+          <button type="submit" name="submit" value="generate" class="btn btn-primary">Run</button>
           <button type="submit" name="submit" value="reset" class="btn">Reset</button>
         </div>
       </div>
-    </div>
-    <div class="container">
+      <div class="container">
       <br />
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-11">
           <label class="control-label crsa-selected">Output</label>
           <pre>
                 <code class="language-{{language}}">
@@ -107,31 +139,31 @@
         </div>
       </div>
     </div>
+    </div>
+
   </form>
+  <p>London is the capital city of England.</p>
+</div>
+
+</div>
+
+<div id="Paris" class="tabcontent">
+  <h3>Paris</h3>
+  <p>Paris is the capital of France.</p>
+</div>
+
+<div id="Tokyo" class="tabcontent">
+  <h3>Tokyo</h3>
+  <p>Tokyo is the capital of Japan.</p>
+</div>
+
+
+
+
 
   <!-- Modal -->
 </div>
-<div class="modal fade" id="exampleModal" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">NETCONF {{operation}} Snippets</h4>
-      </div>
-      <div class="modal-body">
 
-        {% for example in snippets[ 'rmb' ] %}
-
-        <pre onclick="inject_snippet(this)" data-dismiss="modal"><code>{{example}}</code></pre>
-        {% endfor %}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 <!-- /.container -->
 <!-- Bootstrap core JavaScript
  ================================================== -->
@@ -189,4 +221,20 @@
       }
 
     </script>
+
+<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
 {% endblock content %}

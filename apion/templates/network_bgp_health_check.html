@@ -2,9 +2,11 @@
 {% block content %}
 <br>
 <br>
+
+
 <div class="container">
-  <h1 style="text-align:center">Resource Module Builder</h1>
-  <p class="lead">This GUI uses Ansible Collection <a href="https://github.com/ansible-network/cli_rm_builder">cli_rm_builder</a> that helps developers scaffold and maintain Ansible Network Resource Modules.</p>
+  <h1 style="text-align:center">Network BGP Application</h1>
+  <p class="lead">This GUI uses Ansible Collection <a href="https://github.com/ansible-network/network.bgp"> network.bgp</a> that provides a single platform-agnostics entry point to manage all the BGP network resources </p>
 </div>
 <div class="container">
   <form role="form" action="{{uri}}" name="inputs" method="post" class="">
@@ -87,20 +89,20 @@
         <div class="col-md-12">
           <label class="control-label crsa-selected">Output</label>
           <pre>
-<!--                <code class="language-{{language}}">-->
-<!--                 <script>-->
+                <code class="language-{{language}}">
+                 <script>
 
 
-<!--                    var source = new EventSource("/rmb");-->
-<!--                    source.onmessage = function(event) {-->
-<!--                        document.getElementById("res").innerHTML += event.data + "<br/>"-->
-<!--                    }-->
-<!--                                      var source = new EventSource("/rmb");-->
-<!--                    source.onmessage = function(event) {-->
-<!--                        document.getElementById("res").innerHTML += event.data + "<br/>"-->
-<!--                    }-->
-<!--                  </script>-->
-<!--                </code>-->
+                    var source = new EventSource("/rmb");
+                    source.onmessage = function(event) {
+                        document.getElementById("res").innerHTML += event.data + "<br/>"
+                    }
+                                      var source = new EventSource("/rmb");
+                    source.onmessage = function(event) {
+                        document.getElementById("res").innerHTML += event.data + "<br/>"
+                    }
+                  </script>
+                </code>
               </pre>
         </div>
       </div>
@@ -108,29 +110,28 @@
   </form>
 
   <!-- Modal -->
-      <!-- Modal -->
-    </div>
-    <div class="modal fade" id="exampleModal" role="dialog">
-      <div class="modal-dialog modal-lg">
-        <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">NETCONF {{operation}} Snippets</h4>
-          </div>
-          <div class="modal-body">
+</div>
+<div class="modal fade" id="exampleModal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">NETCONF {{operation}} Snippets</h4>
+      </div>
+      <div class="modal-body">
 
-	  {% for example in snippets[ 'rmb' ] %}
+        {% for example in snippets[ 'rmb' ] %}
 
-            <pre onclick="inject_snippet(this)" data-dismiss="modal"><code>{{example}}</code></pre>
-	  {% endfor %}
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div>
+        <pre onclick="inject_snippet(this)" data-dismiss="modal"><code>{{example}}</code></pre>
+        {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
+  </div>
+</div>
 <!-- /.container -->
 <!-- Bootstrap core JavaScript
  ================================================== -->
@@ -141,6 +142,15 @@
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="static/assets/js/ie10-viewport-bug-workaround.js"></script>
 <script>
+       (function() {
+   var button=document.getElementById("add-user");
+   button.addEventListener('click', function(event) {
+      event.preventDefault();
+      var cln = document.getElementsByClassName("user")[0].cloneNode(true);
+      document.getElementById("users").insertBefore(cln,this);
+      return false;
+   });
+})();
       $(document).ready(function(){
       $("#example").click(function(){
       $("#exampleModal").modal("toggle");
@@ -178,5 +188,5 @@
       document.inputs.xml.value = preobj.firstChild.innerText;
       }
 
-</script>
+    </script>
 {% endblock content %}
